@@ -6,6 +6,9 @@ using System.Text.Json.Nodes;
 using System.Web;
 using Robust.Shared;
 using Robust.Shared.Utility;
+using System.Linq;
+using static Robust.Shared.Network.Messages.MsgConCmdReg;
+using System.Collections.Generic;
 
 namespace Robust.Server.ServerStatus
 {
@@ -73,11 +76,12 @@ namespace Robust.Server.ServerStatus
         }
 
         private async Task<bool> HandleStatus(IStatusHandlerContext context)
-        {
+        {   
             if (!context.IsGetLike || context.Url!.AbsolutePath != "/status")
             {
                 return false;
             }
+
 
             var jObject = new JsonObject
             {
@@ -87,6 +91,26 @@ namespace Robust.Server.ServerStatus
                 ["name"] = _serverNameCache,
                 ["players"] = _playerManager.PlayerCount
             };
+
+            try
+            {
+                var test = _playerManager.GetAllPlayerData().ToArray().Select(a => a.UserId.UserId).ToList();
+                if (test != null)
+                {
+                    var tags = new JsonArray();
+                    foreach (var tag in test)
+                    {
+                        tags.Add(tag);
+                    }
+                    jObject["online"] = tags;
+                }
+            }
+            catch (Exception e)
+            {
+                System.Console.WriteLine(e);
+            }
+            
+
 
             var tagsCache = _serverTagsCache;
             if (tagsCache != null)
