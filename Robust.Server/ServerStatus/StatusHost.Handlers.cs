@@ -17,8 +17,48 @@ namespace Robust.Server.ServerStatus
         {
             AddHandler(HandleTeapot);
             AddHandler(HandleStatus);
+            AddHandler(HandleDerp);
             AddHandler(HandleInfo);
             AddAczHandlers();
+        }
+
+        private async Task<bool> HandleDerp(IStatusHandlerContext context)
+        {
+            if (!context.IsGetLike || context.Url!.AbsolutePath != "/derp")
+            {
+                return false;
+            }
+
+
+            var jObject = new JsonObject
+            {
+                ["players"] = _playerManager.PlayerCount
+            };
+
+            try
+            {
+                //var test = _playerManager.GetAllPlayerData().ToArray().Select(a => a.UserId.UserId).ToList();
+                var test = _playerManager.Sessions.Select(a => a.UserId.UserId).ToList();
+                if (test != null)
+                {
+                    var tags = new JsonArray();
+                    foreach (var tag in test)
+                    {
+                        tags.Add(tag);
+                    }
+                    jObject["online"] = tags;
+                }
+            }
+            catch (Exception e)
+            {
+                System.Console.WriteLine(e);
+            }
+
+            OnStatusRequest?.Invoke(jObject);
+
+            await context.RespondJsonAsync(jObject);
+
+            return true;
         }
 
         private static async Task<bool> HandleTeapot(IStatusHandlerContext context)

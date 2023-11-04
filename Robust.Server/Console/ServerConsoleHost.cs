@@ -199,7 +199,11 @@ namespace Robust.Server.Console
             var sender = message.MsgChannel;
             var session = _players.GetSessionByChannel(sender);
 
-            LogManager.GetSawmill(SawmillName).Info($"{FormatPlayerString(session)}:{text}");
+            // Crappy fast hack to avoid OOC spam in console
+            if (!text.StartsWith("ooc"))
+            {
+                LogManager.GetSawmill(SawmillName).Info($"{FormatPlayerString(session)}:{text}");
+            }
 
             ExecuteCommand(session, text);
         }
