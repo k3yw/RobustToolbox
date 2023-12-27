@@ -83,7 +83,7 @@ public sealed partial class AudioSystem : SharedAudioSystem
     {
         if (TerminatingOrDeleted(uid))
         {
-            Log.Error($"Tried to play audio on a terminating / deleted entity {ToPrettyString(uid)}");
+            Log.Error($"Tried to play audio on a terminating / deleted entity {ToPrettyString(uid)}. Trace: {Environment.StackTrace}");
             return null;
         }
 
@@ -99,7 +99,7 @@ public sealed partial class AudioSystem : SharedAudioSystem
     {
         if (TerminatingOrDeleted(uid))
         {
-            Log.Error($"Tried to play audio on a terminating / deleted entity {ToPrettyString(uid)}");
+            Log.Error($"Tried to play audio on a terminating / deleted entity {ToPrettyString(uid)}. Trace: {Environment.StackTrace}");
             return null;
         }
 
@@ -114,7 +114,7 @@ public sealed partial class AudioSystem : SharedAudioSystem
     {
         if (TerminatingOrDeleted(coordinates.EntityId))
         {
-            Log.Error($"Tried to play coordinates audio on a terminating / deleted entity {ToPrettyString(coordinates.EntityId)}");
+            Log.Error($"Tried to play coordinates audio on a terminating / deleted entity {ToPrettyString(coordinates.EntityId)}.  Trace: {Environment.StackTrace}");
             return null;
         }
 
@@ -134,7 +134,7 @@ public sealed partial class AudioSystem : SharedAudioSystem
     {
         if (TerminatingOrDeleted(coordinates.EntityId))
         {
-            Log.Error($"Tried to play coordinates audio on a terminating / deleted entity {ToPrettyString(coordinates.EntityId)}");
+            Log.Error($"Tried to play coordinates audio on a terminating / deleted entity {ToPrettyString(coordinates.EntityId)}.  Trace: {Environment.StackTrace}");
             return null;
         }
 
@@ -237,5 +237,9 @@ public sealed partial class AudioSystem : SharedAudioSystem
             _cachedAudioLengths.Add(filename, loadedMetadata.Length);
             return loadedMetadata.Length;
         }
+    }
+
+    public override void LoadStream<T>(AudioComponent component, T stream)
+    {
     }
 }
