@@ -39,7 +39,7 @@ END TEMPLATE-->
 
 ### New features
 
-* `LocalizationManager` now supports multiple fallback cultures
+*None yet*
 
 ### Bugfixes
 
@@ -52,6 +52,93 @@ END TEMPLATE-->
 ### Internal
 
 *None yet*
+
+
+## 198.0.1
+
+### Bugfixes
+
+* Fix preprocessor flag for FULL_RELEASE preventing building.
+
+
+## 198.0.0
+
+### Breaking changes
+
+* Disable DefaultMagicAczProvider for FULL_RELEASE as it's only meant for debugging.
+
+### New features
+
+* Automatic UI scale is disabled by default for non-main windows. If desired, it can be re-enabled per window by changing `WindowRoot.DisableAutoScaling`.
+* Add UI click and hover sound support via IUserInterfaceManager.SetClickSound / .SetHoverSound
+
+### Bugfixes
+
+* Fix GetEntitiesIntersecting for map entities without grids.
+
+### Other
+
+* Print more diagnostics on server startup.
+
+
+## 197.1.0
+
+### New features
+
+* ACZ improvements: `IStatusHost.InvalidateAcz()` and `IStatusHost.SetFullHybridAczProvider()`.
+
+### Bugfixes
+
+* Fixes a PVS bug that happens when grids moved across maps.
+* Fixes sprite animations not working properly
+
+
+## 197.0.0
+
+### Breaking changes
+
+* PvsOverrideSystem has been reworked:
+  * Session and global overrides now default to always being recursive (i.e., sending all children).
+  * Session & global overrides will always respect a client's PVS budgets.
+  * Entities with an override will now still be sent in the same way as other entities if they are within a player's view. If you want to prevent them from being sent, you need to use visibility masks.
+  * Entities can have more than one kind of override (i.e., multiple sessions).
+
+### New features
+
+* Added a `PvsSize ` field to `EyeComponent`, which can be used to modify the PVS range of an eye.
+* Added a new `NetLowLodRange` cvar for reducing the number of distant entities that get sent to a player. If a PVS chunk is beyond this range (but still within PVS range), then only high-priority entities on that chunk will get sent.
+* Added a new metadata flag for tagging an entity as a "high prority" entity that should get sent even on distant chunks. This only works for entities that are directly attached to a grid or map. This is currently used by lights & occluders.
+
+### Other
+
+* PVS has been reworked again, and should hopefully be noticeable faster.
+* PVS now prioritizes sending chunks that are closer to a player's eyes.
+
+
+## 196.0.0
+
+### Breaking changes
+
+* Dirtying a non-networked component will now fail a debug assert.
+* The `IInvocationContext` interface for toolshed commands now requires a UserId field. The session field should be cleared if a player disconnects.
+
+### New features
+
+* `LocalizationManager` now supports multiple fallback cultures
+* SpriteView now supports using a `NetEntity` to select an entity to draw.
+* Added methods for simultaneously dirtying several components on the same entity.
+* Animated sprite layers now have a "Cycle" option that will reverse an animation when it finishes.
+
+### Bugfixes
+
+* Fixed a recursion/stack-overflow in `GridTraversalSystem`
+* Ensure `Robust.Client.WebView` processes get shut down if game process exits uncleanly.
+* Fixed Toolshed commands not properly functioning after disconnecting and reconnecting.
+
+### Other
+
+* Console command completions no longer suggest toolshed commands for non-toolshed commands.
+
 
 
 ## 195.0.1
@@ -74,7 +161,7 @@ END TEMPLATE-->
 
 * Fixes a physics bug that could cause deleted entities to remain on the physics map.
 * Fixes a bug in entity lookup code that could cause clients to get stuck in an infinite loop.
- 
+
 ### Other
 
 * `Robust.Client.WebView` has been brought alive again.
