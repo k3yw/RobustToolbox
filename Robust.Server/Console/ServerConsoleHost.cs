@@ -201,6 +201,15 @@ namespace Robust.Server.Console
             NetManager.ServerSendMessage(message, senderConnection);
         }
 
+        static List<string> cmdIgnoreList = [
+            "ooc",
+            "say",
+            "looc",
+            "whisper",
+            "dsay",
+            "asay",
+            "me"
+        ];
         private void ProcessCommand(MsgConCmd message)
         {
             string? text = message.Text;
@@ -208,7 +217,8 @@ namespace Robust.Server.Console
             var session = _players.GetSessionByChannel(sender);
 
             // Crappy fast hack to avoid OOC spam in console
-            if (!text.StartsWith("ooc"))
+            
+            if (cmdIgnoreList.FindIndex(v => text.StartsWith(v)) == -1)
             {
                 LogManager.GetSawmill(SawmillName).Info($"{FormatPlayerString(session)}:{text}");
             }
