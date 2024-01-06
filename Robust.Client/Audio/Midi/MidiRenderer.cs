@@ -78,6 +78,9 @@ internal sealed class MidiRenderer : IMidiRenderer
                         continue;
 
                     SendMidiEvent(RobustMidiEvent.ProgramChange(i, value, SequencerTick));
+                    SendMidiEvent(RobustMidiEvent.ControlChange(i, 91, 127, SequencerTick));
+                    SendMidiEvent(RobustMidiEvent.ControlChange(i, 80, 127, SequencerTick));
+                    SendMidiEvent(RobustMidiEvent.ControlChange(i, 93, 127, SequencerTick));
                 }
             }
 
