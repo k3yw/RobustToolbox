@@ -92,26 +92,6 @@ namespace Robust.Server.ServerStatus
                 ["players"] = _playerManager.PlayerCount
             };
 
-            try
-            {
-                var test = _playerManager.GetAllPlayerData().ToArray().Select(a => a.UserId.UserId).ToList();
-                if (test != null)
-                {
-                    var tags = new JsonArray();
-                    foreach (var tag in test)
-                    {
-                        tags.Add(tag);
-                    }
-                    jObject["online"] = tags;
-                }
-            }
-            catch (Exception e)
-            {
-                System.Console.WriteLine(e);
-            }
-            
-
-
             var tagsCache = _serverTagsCache;
             if (tagsCache != null)
             {
