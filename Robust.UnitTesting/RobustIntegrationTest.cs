@@ -19,6 +19,7 @@ using Robust.Client.Timing;
 using Robust.Client.UserInterface;
 using Robust.Server;
 using Robust.Server.Console;
+using Robust.Server.GameStates;
 using Robust.Server.ServerStatus;
 using Robust.Shared;
 using Robust.Shared.Asynchronous;
@@ -742,6 +743,16 @@ namespace Robust.UnitTesting
 
                 return server;
             }
+
+            /// <summary>
+            /// Force a PVS update. This is mainly here to expose internal PVS methods to content benchmarks.
+            /// </summary>
+            public void PvsTick(ICommonSession[] players)
+            {
+                var pvs = EntMan.System<PvsSystem>();
+                pvs.SendGameStates(players);
+                Timing.CurTick += 1;
+            }
         }
 
         public sealed class ClientIntegrationInstance : IntegrationInstance
@@ -924,11 +935,13 @@ namespace Robust.UnitTesting
                 // use server side uids on the client and vice versa. This can sometimes accidentally work if the
                 // entities get created in the same order. For that reason we arbitrarily increment the queued Uid by
                 // some arbitrary quantity.
-                var e = (EntityManager) EntMan;
+
+                /* TODO: End my suffering and fix this because entmanager hasn't started up yet.
                 for (var i = 0; i < 10; i++)
                 {
-                    e.GenerateEntityUid();
+                    EntMan.SpawnEntity(null, MapCoordinates.Nullspace);
                 }
+                */
 
                 return client;
             }

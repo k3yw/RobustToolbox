@@ -88,6 +88,8 @@ public sealed partial class EntityLookupSystem : EntitySystem
     private EntityQuery<BroadphaseComponent> _broadQuery;
     private EntityQuery<ContainerManagerComponent> _containerQuery;
     private EntityQuery<FixturesComponent> _fixturesQuery;
+
+    private EntityQuery<MapGridComponent> _gridQuery;
     private EntityQuery<MetaDataComponent> _metaQuery;
     private EntityQuery<PhysicsComponent> _physicsQuery;
     private EntityQuery<PhysicsMapComponent> _mapQuery;
@@ -107,6 +109,7 @@ public sealed partial class EntityLookupSystem : EntitySystem
         _broadQuery = GetEntityQuery<BroadphaseComponent>();
         _containerQuery = GetEntityQuery<ContainerManagerComponent>();
         _fixturesQuery = GetEntityQuery<FixturesComponent>();
+        _gridQuery = GetEntityQuery<MapGridComponent>();
         _metaQuery = GetEntityQuery<MetaDataComponent>();
         _physicsQuery = GetEntityQuery<PhysicsComponent>();
         _mapQuery = GetEntityQuery<PhysicsMapComponent>();
@@ -137,6 +140,7 @@ public sealed partial class EntityLookupSystem : EntitySystem
         EntityManager.EntityInitialized -= OnEntityInit;
         _transform.OnGlobalMoveEvent -= OnMove;
     }
+
     #region DynamicTree
 
     private void OnBroadphaseTerminating(EntityUid uid, BroadphaseComponent component, ref EntityTerminatingEvent args)
@@ -443,9 +447,9 @@ public sealed partial class EntityLookupSystem : EntitySystem
         (staticBody ? broadphase.StaticSundriesTree : broadphase.SundriesTree).AddOrUpdate(uid, aabb);
     }
 
-    private void OnEntityInit(EntityUid uid)
+    private void OnEntityInit(Entity<MetaDataComponent> uid)
     {
-        if (_container.IsEntityOrParentInContainer(uid) || _mapManager.IsMap(uid) || _mapManager.IsGrid(uid))
+        if (_container.IsEntityOrParentInContainer(uid, uid) || _mapManager.IsMap(uid) || _mapManager.IsGrid(uid))
             return;
 
         // TODO can this just be done implicitly via transform startup?

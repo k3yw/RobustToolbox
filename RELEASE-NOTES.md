@@ -54,6 +54,110 @@ END TEMPLATE-->
 *None yet*
 
 
+## 202.1.1
+
+### Bugfixes
+
+* Reverted some map/grid initialisation changes that might've been causing broadphase/physics errors.
+* Fixed PVS sometimes sending entities without first sending their children.
+* Fixed a container state handling bug caused by containers not removing expected entities when shutting down.
+* Fixed a `EnsureEntity<T>` state handling bug caused by improper handling of entity deletions. 
+* Fixed a bad NetSyncEnabled debug assert.
+
+
+## 202.1.0
+
+### New features
+
+* Add GetLocalEntitiesIntersecting overload that takes in a griduid and a Vector2i tile.
+
+
+## 202.0.0
+
+### Breaking changes
+
+* Various entity manager methods now have a new `where T : IComponent` constraint.
+* The `IComponentFactory.ComponentAdded` event has been renamed to `ComponentsAdded` and now provides an array of component registrations. 
+* `IComponentFactory.RegisterIgnore()` no longer supports overwriting existing registrations, components should get ignored before they are registered.
+
+### New features
+
+* Added `IComponentFactory.GetAllRegistrations()`
+* Add IComponentState interface support for component states so structs can be used in lieu of classes.
+
+
+## 201.0.0
+
+### Breaking changes
+
+* The `zCircleGradient` shader function arguments have changed. It now requires a pixel-size to ensure that the gradient is properly entered.
+
+### Bugfixes
+
+* Fixed some PVS null reference errors.
+
+
+## 200.0.0
+
+### Breaking changes
+
+* MappingDataNode is now ordered.
+* Make invalid AutoNetworkedFields compiler errors.
+
+### New features
+
+* `OSWindowStyles.NoTitleBar` (supported only on Linux X11 for now).
+
+### Bugfixes
+
+* Avoid calling DirtyEntity when a component's last modified tick is not current.
+* Fix `tpgrid` allowing moving grids to nullspace.
+
+### Other
+
+* `OSWindowStyles.NoTitleOptions` is now supported on Linux X11.
+
+
+## 199.0.0
+
+### Breaking changes
+
+* Various `IEntityManager` C# events now use `Entity<MetadataComponent>` instead of `EntityUid`
+* Entity visibility masks now use a ushort instead of an integer.
+* Run grid traversal on entity spawn.
+
+### New features
+
+* Added two new `IEntityManager` C# events that get raiseed before and after deleting ("flushing") all entities.
+* Added a new `DeleteEntity()` override that takes in the entity's metadata and transform components.
+* Add better audio logs.
+* Expand z-library shader.
+* Add a Box2i union for Vector2i and add a Contains variant that assumes the Vector2i is a tile and not a point.
+
+### Bugfixes
+
+* Try to prevent some NREs in PVS.
+* More PVS fixes and cleanup.
+
+
+## 198.1.0
+
+### New features
+
+* `IClydeViewport` now provides access to the light render target.
+* Added a style-class to the `MenuBar` popup control.
+* Added `NextGaussian()` extension method for `System.Random`.
+* Added per-session variant of `PvsOverrideSystem.AddForceSend()`.
+
+### Bugfixes
+
+* Stopped the client from logging errors when attempting to delete invalid entities.
+
+### Other
+
+* The `DevWindow` UI inspector has been improved a bit and it now groups properties by their defining type.
+
+
 ## 198.0.1
 
 ### Bugfixes
