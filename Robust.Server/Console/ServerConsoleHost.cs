@@ -273,6 +273,9 @@ namespace Robust.Server.Console
             }
 
             done:
+
+            result ??= CompletionResult.Empty;
+
             var msg = new MsgConCompletionResp
             {
                 Result = result,

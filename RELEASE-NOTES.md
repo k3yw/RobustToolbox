@@ -54,6 +54,51 @@ END TEMPLATE-->
 *None yet*
 
 
+## 204.0.0
+
+### Breaking changes
+
+* Make EntityManager abstract and make IEntityManager.EntityNetManager not nullable.
+* Make VVAccess.ReadWrite default for all Datafields instead of VVAccess.ReadOnly
+
+### New features
+
+* `TextEdit.OnTextChanged`
+* Add Pick and PickAndTake versions for System.Random for ICollections.
+
+### Bugfixes
+
+* Fix `IClipboardManager.GetText()` returning null in some cases.
+* Fix possible NRE in server-side console command completion code.
+* Fix possible NRE on DebugConsole logs.
+* Fix exception when VVing non-networked components.
+
+### Other
+
+* Remove "Do not use from content" from IComponent.
+
+
+## 203.0.0
+
+### Breaking changes
+
+* `IComponentFactory.RegisterIgnore()` no longer supports overwriting existing registrations, components should get ignored before they are registered.
+* Event bus subscriptions are now locked after `IEntityManager` has started, instead of after the first component gets added. Any event subscriptions now need to happen before startup (but after init).
+* Event bus subscriptions must now be locked before raising any events.
+* Delete FodyWeavers.xsd as it hasn't been used for a long time.
+* Remove physics sleep cancelling as it was, in hindsight, a bad idea.
+
+### New features
+
+* `RobustUnitTest` now has a `ExtraComponents` field for automatically registering additional components.
+* `IComponentFactory.RegisterIgnore()` now accepts more than one string.
+* Added `IComponentFactory.RegisterTypes` for simultaneously registering multiple components.
+
+### Bugfixes
+
+* Clamp volume calculations for audio rather than throwing.
+
+
 ## 202.1.1
 
 ### Bugfixes
@@ -61,7 +106,7 @@ END TEMPLATE-->
 * Reverted some map/grid initialisation changes that might've been causing broadphase/physics errors.
 * Fixed PVS sometimes sending entities without first sending their children.
 * Fixed a container state handling bug caused by containers not removing expected entities when shutting down.
-* Fixed a `EnsureEntity<T>` state handling bug caused by improper handling of entity deletions. 
+* Fixed a `EnsureEntity<T>` state handling bug caused by improper handling of entity deletions.
 * Fixed a bad NetSyncEnabled debug assert.
 
 
@@ -77,7 +122,7 @@ END TEMPLATE-->
 ### Breaking changes
 
 * Various entity manager methods now have a new `where T : IComponent` constraint.
-* The `IComponentFactory.ComponentAdded` event has been renamed to `ComponentsAdded` and now provides an array of component registrations. 
+* The `IComponentFactory.ComponentAdded` event has been renamed to `ComponentsAdded` and now provides an array of component registrations.
 * `IComponentFactory.RegisterIgnore()` no longer supports overwriting existing registrations, components should get ignored before they are registered.
 
 ### New features
