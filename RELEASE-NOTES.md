@@ -39,7 +39,8 @@ END TEMPLATE-->
 
 ### New features
 
-*None yet*
+* Add GlobalRect and GlobalPixelRect for controls to get their UIBox2i in screen terms.
+* Add dotted line drawing to DrawingHandleScreen.
 
 ### Bugfixes
 
@@ -52,6 +53,17 @@ END TEMPLATE-->
 ### Internal
 
 *None yet*
+
+
+## 208.0.0
+
+### Breaking changes
+
+* Metadata flags are no longer serialized as they get rebuilt on entity startup.
+
+### Bugfixes
+
+* Log failing to load user keybinds and handle the exception.
 
 
 ## 207.1.0
